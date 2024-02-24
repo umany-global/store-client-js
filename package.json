@@ -1,0 +1,9 @@
+{
+  "name": "@umany-global/package-template-js",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "./src/main.js",
+  "repository": "git@github.com:umany-global/package-template-js.git",
+  "author": "",
+  "license": "MIT"
+}
