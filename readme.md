@@ -1,49 +1,21 @@
-Package Template for JavaScript
+Trade Service Client for Javascript
 ==========================
 
-- [Requirements](#requirements)
-    - [Dependencies](#dependencies)
-    - [Credentials](#credentials)
 - [Install](#install)
 - [Configuration](#configuration)
-	- [Environment](#environment)
-	- [Initialize](#initialize)
 - [Usage](#usage)
-    - [SomeClassName](#someclassname)
-        - [someMethod](#somemethod)
-    - [SomeOtherClassName](#someotherclassname)
-        - [someOtherMethod](#someothermethod)
 - [Handle Errors](#handle-errors)
 
 
 <br>
 
-Requirements
----------------------
-
-This section contains runtime requirements for this package.
-
-### System Dependencies
-
- Name		            | Supported Versions 													    
-:-----------------------|:--------------------------------------------------------------
- Node.js	            | 20.x or later
- Yarn (Package Manger)  | 2.x
- 
-<br>
-
-### Credentials
-
-Replace this text with specific instructions on how to get required credentials to use this package.
-
-<br>
 
 Installation
 ---------------------
 
 ```shell
 
-yarn add @umany-global/my-package-name
+yarn add @umany-global/trade-service-client-js
 
 ```
 
@@ -52,81 +24,45 @@ yarn add @umany-global/my-package-name
 Configuration
 ---------------------
 
-### Environment
-
-These are the required and/or available environment configurations.
-
-
- Variable Name 		    | Description 													| Values / Examples
-:-----------------------|:--------------------------------------------------------------|:----------------------------------
-NPM_TOKEN	            | Private Repositories Access Key (required to install)  		| 'someHashValue'
-
-<br>
-
 ### Initialize
 
-Replace this text with description or instructions to start using the package along with available params and options
 
 ```javascript
 
-import MyPackageName from '@umany-global/my-package-name';
+import TradeClient from '@umany-global/trade-client-js';
 
-const myInstance = new MyPackageName({
-    paramA: 1, // explain here how this param works
-    paramB: 2, // explain here how this param works
+const clientInstance = new TradeClient({
+    auth: 'tokenOrFunction', // access token value or function returning Promise<string> representing the access token value
 });
 
 ```
+
 <br>
 
 Usage
 -----------------
 
-### SomeClassName
+### TradeClient.vote( params )
 
-Replace this text with description or instructions to start using the package.
+Sends Cause selected by user on a specific purchase
 
 ```javascript
 
-const myInstance = new MyClassName({
-    paramA: 1, // explain here how this param works
-    paramB: 2, // explain here how this param works
+clientInstance.vote({
+    cause: {
+        id: 'someCauseId', // (required) identifier of the cause slected by user
+    },
+    purchase: {
+        id: 'somePurchaseid', // umany ID of the purchase ( when available )
+        source: {
+            id: 'somePurchaseSourceId', // source ID of the purchase ( when no umany ID is available, for example when called from the store website )
+        },
+    },
+}).then( () => {
+
+    // do something on success
+
 });
-
-```
-
-#### someMethod
-
-Replace this text with description on how to use this method and its parameters.
-
-```javascript
-
-myInstance.someMethod( param1, param2, param3 )
-
-```
-
-<br>
-
-### SomeOtherClassName
-
-Replace this text with description or instructions to start using the package.
-
-```javascript
-
-const myOtherInstance = new MyOtherClassName({
-    paramA: 1, // explain here how this param works
-    paramB: 2, // explain here how this param works
-});
-
-```
-
-#### someOtherMethod
-
-Replace this text with description on how to use this method and its parameters.
-
-```javascript
-
-myOtherInstance.someOtherMethod( param1, param2, param3 )
 
 ```
 
@@ -135,10 +71,14 @@ myOtherInstance.someOtherMethod( param1, param2, param3 )
 Hanndle Errors
 -----------------
 
-Here explain how to handle different error types available
 
 ```javascript
 
-myInstance.catch( err => { console.log(err) } );
+clientInstance.catch( err => { 
+
+    // do something on error
+    console.log( err );
+
+});
 
 ```
