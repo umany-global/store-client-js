@@ -1,13 +1,13 @@
 import RESTClient from '@umany-global/rest-client-js';
 
 
-export default class TradeClient {
+export default class PurchaseClient {
 
     #client;
 
     constructor ( config ) {
 
-        config.baseUrl = config.baseUrl ?? 'https://trade.api.umany.global';
+        config.baseUrl = config.baseUrl ?? 'https://api.umany.global/purchases';
 
         this.#client = new RESTClient( config );
     }
@@ -16,8 +16,29 @@ export default class TradeClient {
     vote ( params, options = {} ) {
 
         return this.#client.post({
-            path: '/vote',
+            path: '/votes',
             data: params,
+            auth: options.auth,
+        });
+
+    }
+
+
+    notify ( params, options = {} ) {
+
+        return this.#client.post({
+            path: '/notifications',
+            data: params,
+            auth: options.auth,
+        });
+
+    }
+
+
+    notifyCancellation ( source_id, options = {} ) {
+
+        return this.#client.post({
+            path: '/cancellations',
             auth: options.auth,
         });
 

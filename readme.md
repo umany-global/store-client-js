@@ -1,4 +1,4 @@
-Trade Service Client for Javascript
+Purchase Service Client for Javascript
 ==========================
 
 - [Install](#install)
@@ -15,7 +15,7 @@ Installation
 
 ```shell
 
-yarn add @umany-global/trade-service-client-js
+yarn add @umany-global/purchase-service-client-js
 
 ```
 
@@ -29,9 +29,9 @@ Configuration
 
 ```javascript
 
-import TradeClient from '@umany-global/trade-client-js';
+import PurchaseClient from '@umany-global/purchase-client-js';
 
-const clientInstance = new TradeClient({
+const clientInstance = new PurchaseClient({
     auth: 'tokenOrFunction', // access token value or function returning Promise<string> representing the access token value
 });
 
@@ -42,7 +42,7 @@ const clientInstance = new TradeClient({
 Usage
 -----------------
 
-### TradeClient.vote( params )
+### PurchaseClient.vote( params )
 
 Sends Cause selected by user on a specific purchase
 
@@ -55,7 +55,7 @@ clientInstance.vote({
     purchase: {
         id: 'somePurchaseid', // umany ID of the purchase ( when available )
         source: {
-            id: 'somePurchaseSourceId', // source ID of the purchase ( when no umany ID is available, for example when called from the store website )
+            id: 'somePurchaseSourceId', // source ID of the purchase ( when no umany ID is available, for example when called from the purchase website )
         },
     },
 }).then( () => {
