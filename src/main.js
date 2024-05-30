@@ -1,44 +1,32 @@
 import RESTClient from '@umany-global/rest-client-js';
 
 
-export default class PurchaseClient {
+export default class StoreClient {
 
     #client;
 
     constructor ( config ) {
 
-        config.baseUrl = config.baseUrl ?? 'https://api.umany.global/purchases';
+        config.baseUrl = config.baseUrl ?? 'https://api.umany.global/stores';
 
         this.#client = new RESTClient( config );
     }
 
 
-    vote ( params, options = {} ) {
+    list ( params = {} ) {
 
-        return this.#client.post({
-            path: '/votes',
-            data: params,
-            auth: options.auth,
+        return this.#client.get({
+            path: '/',
+            query: params,
         });
 
     }
 
 
-    notify ( params, options = {} ) {
+    getStore ( id, options = {} ) {
 
-        return this.#client.post({
-            path: '/notifications',
-            data: params,
-            auth: options.auth,
-        });
-
-    }
-
-
-    notifyCancellation ( source_id, options = {} ) {
-
-        return this.#client.post({
-            path: '/cancellations',
+        return this.#client.get({
+            path: '/'+id+( options?.by ? '?by='+options.by : '' ),
             auth: options.auth,
         });
 

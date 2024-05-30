@@ -1,9 +1,9 @@
 {
-  "name": "@umany-global/purchase-client-js",
+  "name": "@umany-global/store-client-js",
   "type": "module",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "./src/main.js",
-  "repository": "git@github.com:umany-global/purchase-client-js.git",
+  "repository": "git@github.com:umany-global/store-client-js.git",
   "author": "",
   "license": "MIT",
   "dependencies": {
