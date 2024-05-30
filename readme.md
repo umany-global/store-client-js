@@ -1,4 +1,4 @@
-Trade Service Client for Javascript
+Stores Service Client for Javascript
 ==========================
 
 - [Requirements](#requirements)
@@ -40,7 +40,7 @@ Installation
 
 ```shell
 
-yarn add @umany-global/trade-service-client-js
+yarn add @umany-global/store-service-client-js
 
 ```
 
@@ -54,9 +54,9 @@ Configuration
 
 ```javascript
 
-import Client from '@umany-global/trade-client-js';
+import StoreClient from '@umany-global/store-client-js';
 
-const clientInstance = new TradeService();
+const storeClient = new StoreClient();
 
 ```
 <br>
@@ -64,36 +64,76 @@ const clientInstance = new TradeService();
 Usage
 -----------------
 
-### Client.getStores( params )
+### StoreClient.find( params )
 
 Receives the following parameters and returns a Promise<Object> which includes a collection of objects represeting Stores.
 
 ```javascript
 
-clientInstance.getStores({
-    skip: 0, // a positive integer (or 0) representing the number of results to be excludad of the query
+storeClient.find({
+    skip: 0, // a positive integer (or 0) representing the number of results to be excluded of the query
     limit: 1, // a positiv integer representing the maximum amount of results to be retrieved
     count: false, // adds to response the count of total records (regardless skip and limit params)
     select: [ // defines which specific attributes are going to be retrieved
         'id',
+        // partner data if store was imported from an external platform
+        'source',
+          'source.type', // 'ecommerce-platform' | 'marketplace' | 'payment-gateway' | 'custom'
+          'source.name', // 'tiendanube' | null
+          'source.id', // store external id
         'business',
-        'category.id',
-        'category.name',
+          // get specific 'business' attributes instead
+          'business.id',
+          'business.profile', 
+            'business.profile.name',
+            'business.profile.slug',
+            'business.profile.logo',
+              'business.profile.logo.small',
+              'business.profile.logo.medium',
+              'business.profile.logo.original',
+        'category',
+          // get specific 'category' attributes instead
+          'category.id',
+          'category.name',
+          'category.parent', // parent category
+          'category.root', // root category
         'name',
+        'urls', // online store urls
+        'location', // physical location
+          'location.address', // physical address
+          'location.geo', // GeoJSON 'point'
+          'location.bounds', // GeoJSON 'polygon
+        'contact',
+          // get specific 'contact' attributes instead
+          'contact.email',
+          'contact.phone',
+          'contact.whatsapp',
+        // social networks, blogs and other channels
+        'channels',
+          // get specific 'channel' attributes instead
+          'channels.instagram',
+            'channels.instagram.slug', // social network username
+            'channels.instagram.id', // social network account id
+            'channels.instagram.url', // profile url
+          'channels.facebook',
+          'channels.twitter',
+          'channels.pinterest',
+          'channels.linkedin',
+          'channels.tiktok',
     ],
 }).then( result => {
 
-    result.data.forEach( cause => {
+    result.data.forEach( store => {
 
         //do something
 
     });
 
-})
+});
 
 ```
 
-The following object is an example of the output
+The following object is an example for a successful result
 
 ```javascript
 
@@ -101,133 +141,111 @@ The following object is an example of the output
   data: [
     {
       id: "5f49243645c0aa03ca386f83",
-      maker: {
+      business: {
         id: "5f49243645c0aa03ca386f83",
-        type: "ngo",
         profile: {
-          name: "Alma Humana",
-          slug: "almahumana"
+          name: {
+            default: "My Brand's Name",
+            es: "Mi Marca",
+          },
+          slug: "mybrandusername",
           logo: {
               type: "image/png",
               urls: {
-                small: "http://contents.umany.global/profiles/664c04923403bc38ebf52442/logo/sm…"
-                medium: "http://contents.umany.global/profiles/664c04923403bc38ebf52442/logo/me…"
-                original: "http://contents.umany.global/profiles/664c04923403bc38ebf52442/logo/or…"
-              }
-          }
+                small: "http://contents.umany.global/profiles/{business_id}/logo/small",
+                medium: "http://contents.umany.global/profiles/{business_id}/logo/medium",
+                original: "http://contents.umany.global/profiles/{business_id}/logo/original",
+              },
+          },
         }
       },
       category: {
-        id: "social.accessibility.jobs",
+        id: "technology.mobile.gadgets",
         root: {
-          id: "social",
+          id: "technology",
           name: {
-            es: "Asistencia Social"
+            default: "Tecnología"
+            es: "Tecnología"
           }
         },
         parent: {
-          id: "social.accessibility",
+          id: "technology.mobile",
           name: {
-            es: "Accesibilidad"
-          }
+            default: "Teléfonos Celulares",
+            es: "Teléfonos Celulares",
+          },
         },
         name: {
-          es: "Accesibilidad Laboral"
+          default: "Accesorios para Teléfonos Celulares",
+          es: "Accesorios para Teléfonos Celulares",
         }
       },
-      slug: "baristasconalma",
-      title: {
-        es: "Baristas con Alma"
-      },
-      slogan: {
-        es: "Despertá las ganas de ayudar"
-      },
-      brief: {
-        es: "Formamos personas con discpacidad como Baristas y les conseguimos empleo"
-      },
-      about: {
-        es: "Hola! Soy Juana, soy parte de un grupo de personas con discapacidad que estudiamos para ser baristas y conseguir nuestro primer trabajo"
-      },
-      cta: {
-        es: "Nos ayud&aacute;s a seguir formándonos?"
-      },
-      media: [
-        {
-          type: "image/jpeg",
-          alt: {
-            es: "Esta soy yo en mi primer día de trabajo"
-          },
-          src: "https://contents.umany.global/causes/baristasconalma/media/01.jpeg"
-        }
+      urls: [
+        'https://mystore.com',
+        'https://www.mystore.com',
+        'https://mystore.net',
       ],
-      goal: {
-        need: [
-          {
-            qty: 10,
-            description: {
-              es: "Bolsa de 1kg de granos de café"
-            },
-            cost: 1000,
-            costUSD: 1
-          }
-        ],
-        locations: [
-          {
-            address: {
-              country: "ar",
-              adminAreaLevel1: "Ciudad Autónoma de Buenos Aires (CABA)",
-              adminAreaLevel2: null,
-              locality: "Palermo",
-              street: "Thames",
-              number: "1788",
-              zipCode: "C1414",
-              floor: null,
-              door: null
-            },
-            geo: {
-              type: "Geopoint",
-              coordinates: [
-                90,
-                25
-              ]
-            },
-            bounds: {
-              type: "Polygon",
-              coordinates: [
-                [
-                  90,
-                  25
-                ],
-                [
-                  90,
-                  25
-                ]
-              ]
-            }
-          }
-        ],
-        currency: "ARS",
-        amount: 1000000,
-        amountUSD: 1000,
-        exchangeRate: 1000,
-        stats: {
-          transactionsCount: 1500,
-          revenueTotal: 15000,
-          clientsRevenueTotal: 15000000,
-          fundsTotal: 30000
+      location: {
+        address: {
+          country: "AR",
+          adminAreaLevel1: "Provincia de Buenos Aires",
+          adminAreaLevel2: "Partido de Quilmes",
+          city: "Quilmes",
+          locality: "Quilmes Oeste",
+          street: "Avenida Mitre",
+          number: "123456",
+          zipCode: "1234",
+          floor: "1",
+          door: "A",
         },
-        stage: "fundraising"
+        geo: {
+          type: "Point",
+          coordinates: [
+            123.4567, // lng
+            12.3456, // lat
+          ],
+        },
+        bounds: {
+          type: "Polygon",
+          coordinates: [
+            [ 123.4567, 12.3456 ], // lng, lat
+            [ 123.4567, 12.3456 ], // lng, lat
+          ],
+        },
+        channels: {
+          instagram: {
+            id: 'instagram_user_id',
+            slug: 'instagram.user.name',
+            url: 'https://instagram.com/instagram.user.name',
+          },
+        },
       },
-      stats: {
-        transactionsCount: 2500,
-        revenueTotal: 25000,
-        clientsRevenueTotal: 25000000,
-        fundsTotal: 50000
-      },
-      status: "active"
-    }
+    },
   ]
 }
+
+```
+<br>
+
+### StoreClient.findById( id, options = {} )
+
+Receives the following parameters and returns a Promise<Object> representing a single store.
+
+```javascript
+
+storeClient.findById(
+  'some_store_id',
+  {
+    by: 'source.id', // matches id param with 'source.id' attribute instead if 'id'
+    select: [ // defines which specific attributes are going to be retrieved
+      // same options as list() method
+    ],
+  }
+).then( store => {
+
+    //do something
+
+});
 
 ```
 
@@ -239,6 +257,14 @@ Hanndle Errors
 
 ```javascript
 
-clientInstance.catch( err => { console.log(err) } );
+storeClient.findById( 'store_id' ).then( store => {
+  
+  // do something
+
+}).catch( err => { 
+  
+  // handle error here
+
+});
 
 ```

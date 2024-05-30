@@ -1,7 +1,7 @@
 {
   "name": "@umany-global/store-client-js",
   "type": "module",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "./src/main.js",
   "repository": "git@github.com:umany-global/store-client-js.git",
   "author": "",

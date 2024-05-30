@@ -13,7 +13,7 @@ export default class StoreClient {
     }
 
 
-    list ( params = {} ) {
+    find ( params = {} ) {
 
         return this.#client.get({
             path: '/',
@@ -23,7 +23,7 @@ export default class StoreClient {
     }
 
 
-    getStore ( id, options = {} ) {
+    findById ( id, options = {} ) {
 
         return this.#client.get({
             path: '/'+id+( options?.by ? '?by='+options.by : '' ),
