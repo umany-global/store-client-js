@@ -23,7 +23,7 @@ These are the runtime requirements for this package.
 
  Name		            | Supported Versions 													    
 :-----------------------|:--------------------------------------------------------------
- Node.js	            | 20.x or later
+ Node.js	              | 20.x or later
  Yarn (Package Manger)  | 2.x
  Javascript             | ES6
  
@@ -40,7 +40,7 @@ Installation
 
 ```shell
 
-yarn add @umany-global/store-service-client-js
+yarn add @umany-global/store-client-js
 
 ```
 
